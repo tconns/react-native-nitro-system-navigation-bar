@@ -1,0 +1,17 @@
+{
+  "cxxNamespace": ["nitrosystemnavigationbar"],
+  "ios": {
+    "iosModuleName": "NitroSystemNavigationBar"
+  },
+  "android": {
+    "androidNamespace": ["nitrosystemnavigationbar"],
+    "androidCxxLibName": "nitrosystemnavigationbar"
+  },
+  "autolinking": {
+    "NitroSystemNavigationBar": {
+      "swift": "NitroSystemNavigationBar",
+      "kotlin": "NitroSystemNavigationBar"
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}
