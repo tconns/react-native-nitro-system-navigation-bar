@@ -1,4 +1,4 @@
-package com.margelo.nitro.nitrosystemnavigationbar
+package com.margelo.nitro.systemnavigationbar
 
 import android.app.Activity
 import android.view.Window

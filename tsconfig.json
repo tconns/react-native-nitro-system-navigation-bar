@@ -1,18 +1,29 @@
 {
+  "extends": [
+    // "@tsconfig/react-native/tsconfig.json",
+    // "**/node_modules",
+    // "**/lib",
+    // "**/.eslintrc.js",
+    // "**/.prettierrc.js",
+    // "**/jest.config.js",
+    // "**/babel.config.js",
+    // "**/metro.config.js",
+    // "**/tsconfig.json"
+  ],
+  "include": ["src"],
   "compilerOptions": {
-    "rootDir": ".",
-    "paths": {
-      "react-native-nitro-system-navigation-bar": ["./src/index"]
-    },
+    "rootDir": "src",
+    "outDir": "lib",
+    "jsx": "react",
+    "composite": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx",
     "lib": ["ESNext"],
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
+    "moduleResolution": "Node",
+    "noEmit": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
@@ -23,7 +34,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext",
+    "target": "esnext",
     "verbatimModuleSyntax": true
   }
 }

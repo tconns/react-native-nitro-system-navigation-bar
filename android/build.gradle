@@ -5,7 +5,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:8.10.1"
+    classpath "com.android.tools.build:gradle:8.12.0"
   }
 }
 
@@ -19,24 +19,23 @@ def isNewArchitectureEnabled() {
 }
 
 apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
-apply from: '../nitrogen/generated/android/nitrosystemnavigationbar+autolinking.gradle'
-apply from: './fix-prefab.gradle'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply from: '../nitrogen/generated/android/NitroSystemNavigationBar+autolinking.gradle'
 
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
-}
-
-def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["NitroSystemNavigationBar_" + name]).toInteger()
 }
 
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["NitroSystemNavigationBar_" + name]
 }
 
+def getExtOrIntegerDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["NitroSystemNavigationBar_" + name]).toInteger()
+}
+
 android {
-  namespace "com.margelo.nitro.nitrosystemnavigationbar"
+  namespace "com.margelo.nitro.systemnavigationbar"
 
   ndkVersion getExtOrDefault("ndkVersion")
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
@@ -48,7 +47,7 @@ android {
 
     externalNativeBuild {
       cmake {
-        cppFlags "-frtti -fexceptions -Wall -fstack-protector-all"
+        cppFlags "-frtti -fexceptions -Wall -Wextra -fstack-protector-all"
         arguments "-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
         abiFilters (*reactNativeArchitectures())
 
@@ -70,6 +69,11 @@ android {
     }
   }
 
+  buildFeatures {
+    buildConfig true
+    prefab true
+  }
+
   packagingOptions {
     excludes = [
             "META-INF",
@@ -89,18 +93,6 @@ android {
             "**/libreact_nativemodule_core.so",
             "**/libjscexecutor.so"
     ]
-  }
-
-  buildFeatures {
-    buildConfig true
-    prefab true
-    prefabPublishing true
-  }
-
-  prefab {
-    nitrosystemnavigationbar {
-      headers "${project.buildDir}/headers/nitrosystemnavigationbar/"
-    }
   }
 
   buildTypes {
@@ -135,19 +127,21 @@ repositories {
   google()
 }
 
+
 dependencies {
+  // For < 0.71, this will be from the local maven repo
+  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
+  //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+
+  // Add a dependency on NitroModules
   implementation project(":react-native-nitro-modules")
 }
 
-tasks.register('prepareHeaders', Copy) {
-  from fileTree('./src/main/cpp').filter { it.isFile() }
-  from fileTree('../cpp/').filter { it.isFile() }
-  from fileTree('../nitrogen/generated/android/c++').filter { it.isFile() }
-  from fileTree('../nitrogen/generated/shared/c++').filter { it.isFile() }
-  include "*.hpp"
-  into "${project.buildDir}/headers/nitrosystemnavigationbar/nitrosystemnavigationbar/"
-  includeEmptyDirs = false
+if (isNewArchitectureEnabled()) {
+  react {
+    jsRootDir = file("../src/")
+    libraryName = "NitroSystemNavigationBar"
+    codegenJavaPackageName = "com.margelo.nitro.systemnavigationbar"
+  }
 }
-
-preBuild.dependsOn(prepareHeaders)

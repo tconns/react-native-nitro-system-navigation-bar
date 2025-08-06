@@ -1,11 +1,12 @@
 {
-  "cxxNamespace": ["nitrosystemnavigationbar"],
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["systemnavigationbar"],
   "ios": {
     "iosModuleName": "NitroSystemNavigationBar"
   },
   "android": {
-    "androidNamespace": ["nitrosystemnavigationbar"],
-    "androidCxxLibName": "nitrosystemnavigationbar"
+    "androidNamespace": ["systemnavigationbar"],
+    "androidCxxLibName": "NitroSystemNavigationBar"
   },
   "autolinking": {
     "NitroSystemNavigationBar": {
@@ -13,5 +14,6 @@
       "kotlin": "NitroSystemNavigationBar"
     }
   },
-  "ignorePaths": ["node_modules"]
+  "ignorePaths": ["**/node_modules"],
+  "gitAttributesGeneratedFlag": false
 }
